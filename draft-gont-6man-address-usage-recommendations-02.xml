@@ -1,0 +1,581 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+
+<?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
+
+<?rfc toc="yes" ?>
+<?rfc symrefs="yes" ?>
+<?rfc strict="no" ?>
+
+<rfc 
+	ipr="trust200902"
+	category="bcp"
+	docName="draft-gont-6man-address-usage-recommendations-02">
+  <front>
+    <title abbrev="IPv6 Address Recommendations">IPv6 Address Usage Recommendations</title>
+
+    <author fullname="Fernando Gont" initials="F." surname="Gont">
+      <organization abbrev="SI6 Networks / UTN-FRH">SI6 Networks / UTN-FRH</organization>
+
+      <address>
+        <postal>
+          <street>Evaristo Carriego 2644</street>
+          <code>1706</code>
+          <city>Haedo</city>
+          <region>Provincia de Buenos Aires</region>
+          <country>Argentina</country>
+        </postal>
+
+        <phone>+54 11 4650 8472</phone>
+        <email>fgont@si6networks.com</email>
+        <uri>http://www.si6networks.com</uri>
+      </address>
+    </author>
+
+
+    <author fullname="Guillermo Gont" initials="G.G." surname="Gont">
+      <!-- abbrev not needed but can be used for the header
+         if the full organization name is too long -->
+
+      <organization abbrev="SI6 Networks">SI6 Networks</organization>
+
+      <address>
+        <postal>
+          <!-- I've omitted my street address here -->
+
+          <street>Evaristo Carriego 2644</street>
+
+          <code>1706</code>
+
+          <city>Haedo</city>
+
+          <region>Provincia de Buenos Aires</region>
+
+          <country>Argentina</country>
+        </postal>
+
+        <phone>+54 11 4650 8472</phone>
+
+        <email>ggont@si6networks.com</email>
+
+        <uri>https://www.si6networks.com</uri>
+      </address>
+    </author>	
+
+    <author fullname="Madeleine Garcia Corbo" initials="M." surname="Garcia Corbo">
+      <organization abbrev="SITRANS">Servicios de Información del Transporte</organization>
+
+      <address>
+        <postal>
+          <street>Neptuno 358</street>
+          <code>10400</code>
+          <city>Havana City</city>
+ <!--         <region>Provincia de Buenos Aires</region> -->
+          <country>Cuba</country>
+        </postal>
+
+<!--        <phone>+54 11 4650 8472</phone>  -->
+        <email>madelen.garcia16@gmail.com</email>
+<!--        <uri>http://www.si6networks.com</uri>  -->
+      </address>
+    </author>
+
+   <author fullname="Christian Huitema" initials="C." surname="Huitema">
+      <organization>Private Octopus Inc.</organization>
+      <address>
+        <postal>
+          <street></street>
+          <city>Friday Harbor</city>
+          <code>98250</code>
+          <region>WA</region>
+          <country>U.S.A.</country>
+        </postal>
+        <email>huitema@huitema.net</email>
+        <uri>http://privateoctopus.com</uri>
+      </address>
+    </author>
+
+    <date/>
+
+    <area>Internet</area>
+    <workgroup>IPv6 maintenance Working Group (6man)</workgroup>
+
+
+
+    <abstract>
+    <t>
+This document analyzes the security and privacy implications of IPv6 addresses 
+based on a number of properties such as address scope, stability, and usage type. 
+It analyzes what properties are desirable for some popular scenarios, and provides 
+advice regarding the configuration and usage of such addresses.
+<!--
+IPv6 hosts typically configure and use a number of addresses with different scope 
+and stability properties. Recent work has analyzed the security and privacy 
+implications of IPv6 addressing and, as a result, there have been some improvements 
+in this area. However, advice is still missing regarding which address properties 
+are desirable in different scenarios, and how the resulting addresses should be 
+used when they are configured. This document provides advice regarding desirable 
+address properties for different powhich address types to configure and how to employ 
+them in a number of popular scenarios. -->
+</t>
+    </abstract>
+  </front>
+
+  <middle>
+  
+<section title="Introduction" anchor="intro">
+<t>IPv6 hosts typically configure a number of IPv6 addresses, which may differ in 
+multiple aspects, such as address scope and stability (e.g. stable addresses vs. 
+temporary addresses). For example, a host may configure one stable and one temporary 
+address per each autoconfiguration prefix advertised on the local network. The addresses 
+to be configured typically depend on local system configuration, with the aforementioned 
+configuration being static and irrespective of the network the host attaches to.</t>
+
+
+
+
+
+
+<t>There are three parameters that affect the security and privacy properties of an address:
+
+<list style="symbols">
+<t>Scope</t>
+<t>Stability</t>
+<t>Usage type (client-like "outgoing connections" vs. server-like "incoming connections")</t>
+</list>
+</t>
+
+<t>
+<xref target="predictability-considerations"/>, <xref target="scope-considerations"/>, 
+<xref target="stability-considerations"/>, and <xref target="usage-type-considerations"/> 
+discuss the security and privacy implications (and associated tradeoffs) of the scope, 
+stability and usage type properties of IPv6 addresses, respectively.
+</t>
+
+</section>
+
+
+<section title="Terminology" anchor="terminology">
+  
+
+<t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
+   NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in
+   RFC 2119 <xref target="RFC2119"/>.</t>
+</section>
+
+<section title="Problem Statement" >
+<t>
+Applications use system API's to select the IPv6 addresses that will be used
+for incoming and outgoing connections. This choices have consequences in term
+of privacy, security, stability and performances.
+</t>
+<t>
+TODO: provide a description of the potential problems, before presenting recommendations.
+</t>
+
+<!--
+<t>
+When performing outbound connections, the default source address selection algorithm 
+XXX will govern the preference for the source address to be employed. The default 
+source address selection algorithm is specified in xxxx, and can be overriden via e.g. 
+an API such as that specified in XXXX, or via system-wide settings.
+</t>
+
+<t>
+For example, when a temporary address is available, such temporary addresses will be 
+employed by default for such outbound "connections". This makes sense from a security 
+and privacy standpoint, since temporary addresses more effectively mitigate network 
+activity correlation attacks.
+</t>
+
+
+<t>
+
+When it comes to inbound connections, hosts typically bind the so-called wildcard address, 
+thus meaning that incoming connections are accepted on any of the configured addresses, 
+although the preference of receiving incoming connections on stable addresses (typically 
+of global scope) may be indicated by e.g. publishing only such addresses on the DNS, 
+or exposing only such addresses via the application protocol.
+
+</t>
+
+-->
+
+
+</section>
+
+<section title="Predictability Considerations" anchor="predictability-considerations">
+<t>Predictable IPv6 addresses result in a number of security and privacy implications. 
+For example, <xref target="Barnes2012"/> discusses how patterns in network prefixes 
+can be leveraged for IPv6 address scanning. On the other hand, <xref target="RFC7707"/>, 
+<xref target="RFC7721"/> and <xref target="RFC7217"/> discuss the security and privacy 
+implications of predictable IPv6 Interface Identifiers (IIDs).</t>
+
+<t>
+Given the aforementioned previous work in this area, and the formal specification update 
+produced by <xref target="RFC8064"/>, we expect (and assume in the rest of this document) 
+that implementations have replaced any schemes that produce predictable addresses with 
+alternative schemes that avoid such patterns (e.g., RFC7217 in replacement of the 
+traditional SLAAC addresses that embed link-layer addresses). </t>
+</section>
+
+
+<section title="Address Scope Considerations" anchor="scope-considerations">
+<t>
+The IPv6 address scope can, in some scenarios, limit the attack exposure of a node as a result 
+of the implicit isolation provided by a non-global address scope. For example, a node that 
+only employs link-local addresses may, in principle, only be exposed to attack from other 
+nodes in the local link. Hosts employing only Unique Local Addresses (ULAs) may be more 
+isolated from attack than those employing Global Unicast Addresses (GUAs), assuming that 
+proper packet filtering is enforced at the network edge.
+</t>
+
+<t>The potential protection provided by a non-global addresses should not be regarded as a 
+complete security strategy, but rather as a form of "prophylactic" security 
+(see <xref target="I-D.gont-opsawg-firewalls-analysis"/>).
+</t>
+
+<t>We note that the use of non-global addresses is usually limited to a reduced type of 
+applications/protocols that e.g. are only meant to operate on a reduced scope, and hence 
+their applicability may be limited.</t>
+
+<t>A discussion of ULA usage considerations can be found in 
+<xref target="I-D.ietf-v6ops-ula-usage-considerations"/>.</t>
+</section>
+
+<section title="Address Stability Considerations" anchor="stability-considerations">
+<t>The stability of an address has two associated security/privacy implications:
+<list style="symbols">
+<t>Ability of an attacker to correlate network activity</t>
+<t>Exposure to attack</t>
+</list>
+
+</t>
+
+<t>
+For obvious reasons, an address that is employed for multiple communication instances 
+allows the aforementioned network activities to be correlated. The longer an address 
+is employed (i.e., the more stable it is), the longer such correlation will be possible. 
+In the worst-case scenario, a stable address that is employed for multiple communication 
+instances over time will allow all such activities to be correlated. On the other hand, 
+if a host were to generate (and eventually "throw away") one new address for each 
+communication instance (e.g., TCP connection), network activity correlation would be mitigated. 
+
+<list style="hanging">
+<t>NOTE: the use of constant IIDs (as in traditional SLAAC) result in addresses that, while not constant as a whole (since the prefix changes), contain a globally-unique value that leaks out the node "identity". Such addresses result in the worst possible security and privacy implications, and their use has been deprecated by <xref target="RFC8064"/>.
+</t>
+</list>
+</t>
+
+
+<t>Typically, when it comes to attack exposure, the longer an address is employed the longer 
+an attacker is exposed to attacks (e.g. an attacker has more time to find the address in the 
+first place <xref target="RFC7707"/>). While such exposure is traditionally associated with 
+the stability of the address, the usage type of the address 
+(see <xref target="usage-type-considerations"/>) may also have an impact on attack exposure.
+</t>
+
+
+<t>A popular approach to mitigate network activity correlation is the use of "temporary 
+addresses" <xref target="RFC4941"/>. Temporary addresses are typically configured and 
+employed along with stable addresses, with the temporary addresses employed for outgoing 
+communications, and the stable addresses employed for incoming communications.
+<list style="hanging">
+<t>
+NOTE: Ongoing work <xref target="I-D.gont-6man-non-stable-iids"/> aims at updating 
+<xref target="RFC4941"/> such that temporary addresses can be employed without the 
+need to configure stable addresses.</t>
+</list>
+
+We note that the extent to which temporary addresses provide improved mitigation of 
+network activity correlation and/or reduced attack exposure may be questionable 
+and/or limited in some scenarios. For example, a temporary address that is reachable 
+for, say, a few hours has a questionable "reduced exposure" (particularly when 
+automated attack tools do not typically require such a long period of time to 
+complete their task). Similarly, if network activity can be correlated for the 
+life of such address (e.g., on the order of several hours), such period of time might 
+be long enough for the attacker to correlate all the network activity he is meaning 
+to correlate.
+</t>
+<!--
+Temporary addresses (as opposed to stable addresses) may limit the exposure of an 
+address to attack, and may help to mitigate network activity correlation. We note 
+that the extent to which temporary addresses provide improved mitigation of network 
+activity correlation and/or reduced attack exposure may be questionable in a number 
+of scenarios. For example, a temporary address that is reachable for, say, a few 
+hours has a questionable "reduced exposure" (particularly when automated attack 
+tools do not typically require such a long period of time to complete their task). 
+Similarly, if network activity can be correlated for the life of such address 
+(e.g., in the order of several hours), there are scenarios in which such period of 
+time would be long enough for an attacker to correlate all the network activity he 
+is meaning to correlate.-->
+
+
+<t>
+In order to better mitigate network activity correlation and/or possibly reduce host 
+exposure, an implementation might want to either reduce the preferred lifetime of a 
+temporary address, or even better, generate one new temporary address for each new 
+transport protocol instance. However, the associated lifetime/stability of an address 
+may have a negative impact on the network. For example, if a node were to employ 
+"throw away" IPv6 addresses, or employ temporary addresses <xref target="RFC4941"/> 
+with a short preferred lifetime, local nodes might need to maintain too many entries 
+in their Neighbor Cache, and a number of devices (possibly enforcing security policies) 
+might also need to keep such additional state.
+</t>
+
+<t>Additionally, enforcing a maximum lifetime on IPv6 addresses may cause long-lived 
+TCP connections to fail. For example, an address becoming "Invalid" (after transiting 
+through the "Preferred" and "Deprecated" states) would cause the TCP connections 
+employing them to break. This, in turn, would cause e.g. long-lived SSH sessions to break/fail.
+</t>
+
+<t>
+In some scenarios, attack exposure may be reduced by limiting the usage of temporary 
+addresses to outbound connections, and prevent such addresses from being used for 
+inbound connections (please see <xref target="usage-type-considerations"/>).
+</t>
+</section>
+
+
+<section title="Usage Type Considerations" anchor="usage-type-considerations">
+
+<t>
+A node that employs one of its addresses to communicate with an external server 
+(i.e., to perform an "outgoing connection") may cause such address to become exposed 
+to attack. For example, once the external server receives an incoming connection, 
+the corresponding server might launch an attack against the aforementioned address. 
+A real-world instance of this type of scenario has been documented in <xref target="Hein"/>.
+</t>
+
+<t>
+However, we note that employing an IPv6 address for an outgoing communications need 
+not increase the exposure of local services to other parties. For example, nodes 
+could employ temporary addresses only for outgoing connections, but not for incoming 
+connections. Thus, external nodes that learn about client's addresses could not really 
+leverage such addresses for actively contacting the clients.
+</t>
+
+<t>There are multiple ways in which this could possibly be achieved, with different 
+implications. Namely:
+<list>
+<t>Run a host-based or network-based firewall</t>
+<t>Bind services to specific (explicit) addresses</t>
+<t>Bind services only to stable addresses</t>
+</list>
+</t>
+
+<t>
+A client could simply run a host-based firewall that only allows incoming connections 
+on the stable addresses. This is clearly more of an operational way of achieving the 
+desired functionality, and may require good firewall/host integration (e.g., the firewall 
+should be able to tell stable vs. temporary addresses), may require the client to run 
+additional firewall software for this specific purpose, etc. In other scenarios, a 
+network-based firewalls could be configured to allow outgoing communications from all 
+internal addresses, but only allow incoming communications to stable addresses. For 
+obvious reasons, this is generally only applicable to networks where incoming communications 
+are allowed to a limited number of hosts/servers.
+</t>
+
+<t>Services could be bound to specific (explicit) addresses, rather than to all 
+locally-configured addresses. However, there are a number of short-comings associated 
+with this approach. Firstly, an application would need to be able to learn all of its 
+addresses and associated stability properties, something that tends to be non-trivial 
+and non-portable, and that also makes applications protocol-dependent, unnecessarily. 
+Secondly, the Sockets API does not really allow a socket to be bound to a subset of 
+the node's addresses. That is, sockets can be bound to a single address or to all 
+available addresses (wildcard), but not to a subset of all the configured addresses.
+</t>
+
+<t>Binding services only to stable addresses provides a clean separation between addresses 
+employed for client-like outgoing connections and server-like incoming connections. 
+However, we currently lack an appropriate API for nodes to be able to specify that a 
+socket should only be bound to stable addresses. Development of such an API should be 
+considered for future work.
+</t>
+
+</section>
+
+<section title="Advice on IPv6 Address Configuration" anchor="advice-configuration">
+<t>[TBD]</t>
+</section>
+
+<section title="Advice on IPv6 Address Usage" anchor="advice-usage">
+<t>[TBD]</t>
+</section>
+
+	<section title="IANA Considerations" anchor="iana-considerations">
+<t>There are no IANA registries within this document. The RFC-Editor can remove this section before publication of this document as an RFC.</t>
+</section>
+
+    <section title="Security Considerations">
+
+	<t>This document discusses address usage considerations, and also describes possible future standards-track work to allow for greater flexibility in IPv6 address usage.</t>
+
+    </section>
+
+    <section title="Acknowledgements">
+<t>The authors would like to thank [TBD] for providing valuable comments on earlier versions of this document.</t>
+
+<t>Fernando Gont would like to thank Nelida Garcia and Jorge Oscar Gont for their love and support, and Ivan Arce and Diego Armando Maradona for their inspiration.</t>
+    </section>
+
+
+  </middle>
+
+  <back>
+  <references title='Normative References'>
+	<?rfc include="reference.RFC.2460" ?>
+	<?rfc include="reference.RFC.2119" ?>
+	<?rfc include="reference.RFC.4941" ?>
+	<?rfc include="reference.RFC.7217" ?>
+<!--
+	<?rfc include="reference.RFC.8064" ?>
+-->
+      <reference anchor="RFC8064" target="https://tools.ietf.org/rfc/rfc8064.txt">
+        <front>
+<title abbrev="Default Interface Identifiers">Recommendation on Stable IPv6 Interface Identifiers</title>
+
+
+    <author fullname="Fernando Gont" initials="F." surname="Gont">
+      <organization abbrev="SI6 Networks / UTN-FRH">SI6 Networks / UTN-FRH</organization>
+
+      <address>
+        <postal>
+          <street>Evaristo Carriego 2644</street>
+
+          <code>1706</code>
+
+          <city>Haedo</city>
+
+          <region>Provincia de Buenos Aires</region>
+
+          <country>Argentina</country>
+        </postal>
+
+        <phone>+54 11 4650 8472</phone>
+
+        <email>fgont@si6networks.com</email>
+
+        <uri>https://www.si6networks.com</uri>
+      </address>
+    </author>
+
+<author initials="A." surname="Cooper" fullname="Alissa Cooper">
+    <organization>Cisco</organization>
+    <address>
+      <postal>
+        <street>707 Tasman Drive</street>
+        <city>Milpitas</city>
+		  <region>CA</region>
+        <code>95035</code>
+        <country>United States of America</country>
+      </postal>
+      <phone>+1-408-902-3950</phone>
+      <email>alcoop@cisco.com</email>
+      <uri>https://www.cisco.com/</uri>
+    </address>
+  </author>
+
+	<author
+	        fullname="Dave Thaler"
+	        initials="D."
+	        surname="Thaler">
+	        <organization>Microsoft</organization>
+
+	        <address>
+
+	            <postal>    
+				<street>Microsoft Corporation</street>
+				<street>One Microsoft Way</street>
+			<city>Redmond</city>
+			<region>WA</region>
+			<code>98052</code>
+	            </postal>
+	            <phone>+1 425 703 8835</phone>
+
+	            <email>dthaler@microsoft.com</email>
+
+	        </address>
+	    </author>
+
+    <author initials="W." surname="Liu" fullname="Will (Shucheng) Liu">
+      <organization>Huawei Technologies</organization>
+      <address>
+        <postal>
+          <street>Bantian, Longgang District</street>
+          <city>Shenzhen</city>
+          <code>518129</code>
+          <country>China</country>
+        </postal>
+        <email>liushucheng@huawei.com</email>
+      </address>
+    </author>
+
+
+<date month="February" year="2017"/>
+        </front>
+<!--
+        <seriesInfo name=""
+                    value="February 2017"/> -->
+      </reference>
+
+  </references>
+
+  <references title='Informative References'>
+	<?rfc include="reference.RFC.7707" ?>
+	<?rfc include="reference.RFC.7721" ?>
+	<?rfc include="reference.I-D.ietf-v6ops-ula-usage-considerations" ?>
+
+	<?rfc include="reference.I-D.gont-6man-non-stable-iids" ?>
+
+	<?rfc include="reference.I-D.gont-opsawg-firewalls-analysis" ?>
+
+
+
+
+      <reference anchor="Barnes2012" target="https://www.caida.org/workshops/isma/1202/slides/aims1202_rbarnes.pdf">
+        <front>
+          <title>Mapping the Great Void Smarter scanning for IPv6</title>
+
+          <author fullname="Richard Barnes" initials="R." surname="Barnes">
+          </author>
+
+
+          <author fullname="Rick Altmann" initials="R." surname="Altmann">
+          </author>
+
+
+
+          <author fullname="Daniel Kerr" initials="D." surname="Kerr">
+          </author>
+
+
+          <date/>
+        </front>
+
+        <seriesInfo name=""
+                    value="ISMA 2012 AIMS-4 - Workshop on Active Internet Measurements, February 2012"/>
+      </reference>
+
+
+      <reference anchor="Hein" target="http://netpatterns.blogspot.be/2016/01/the-rising-sophistication-of-network.html">
+        <front>
+          <title>The Rising Sophistication of Network Scanning</title>
+
+          <author fullname="Brad Hein" initials="B." surname="Hein">
+          </author>
+
+          <date/>
+        </front>
+
+        <seriesInfo name=""
+                    value="January 2016"/>
+      </reference>
+
+</references>
+
+  </back>
+
+</rfc>
