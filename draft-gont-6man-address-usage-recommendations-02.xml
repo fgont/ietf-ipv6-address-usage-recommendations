@@ -172,9 +172,64 @@ for incoming and outgoing connections. This choices have consequences in term
 of privacy, security, stability and performances.
 </t>
 <t>
-TODO: provide a description of the potential problems, before presenting recommendations.
+Default Address Selection for IPv6 is specified in <xref target="RFC6724" />. The
+selection starts with a set of potential destination addresses, such as 
+returned by getaddrinfo(), and the set of potential source addresses currently
+configured for the selected interfaces. For each potential destination address,
+the algorithm will select the source address that provides the best route to the 
+destination, while chosing the appropriate scope and prefering temporary addresses.
+The algorithm will then select the destination address, while giving a preference to
+reachable addresses with the smallest scope. The selection may be affected by system
+settings.
 </t>
-
+<t>
+We note that <xref target="RFC6724" /> only applies for outgoing connections, such
+as those made by clients trying to contact services. When devices provide service, the
+common pattern is to just wait for connections over all addresses configured on the 
+device. For example, application using the socket API will commonly bind() the listening 
+socket to undefined address. This long established behavior is appropriate
+for devices providing public services, but may have unexpected results for devices
+providing semi-private services, such as various forms of peer-to-peer or local-only
+applications.
+</t>
+<t>
+Systems like DNS-Based Service Discovery <xref target="RFC6763" /> allows clients to 
+discover services within a limited scope, that can be defined by a domain name. These
+services are not advertised outside of that scope, and thus do not expect to be 
+discovered by random parties on the Internet. Yet it appears that such services
+are easily discoverable if they listen for connections to IPv6 addresses that 
+a client process also uses as source address when connecting to remote servers.
+<list>
+<t>
+An example of such unexpected discovery is described in <xref target="Hein" />. A network 
+manager observed scanning traffic directed at the temporary addresses of local devices.
+Analysis shows that the scanners learned the addresses by observing the device 
+contact an NTP service (<xref target="RFC5905" />). The remote scanning was possible
+because the local devices were also accepting connections directed to the temporary
+addresses.
+</t>
+</list>
+</t>
+<t>
+It is obvious from the example that the "attack surface" of the services is increased 
+because it listens to the same IPv6 addresses that are also used by clients for remote
+connectivity. But the overlap between "client" and "server" addresses is only one part of
+the problem. Suppose that a devices hosts both a video game and a home automation 
+application. The video game users will be able to discover the IPv6 address of the
+game server. If the home automation server listens to the same IPv6 addresses, it 
+is now exposed to connection attempts by all these users. That, too, increases the
+attack surface of the home automation server.
+</t>
+<t>
+The stable addresses recommended in <xref target="RFC8064" /> use stable IID defined
+in <xref target="RFC7217" />. One key part of that algorithm is that if a device
+gets connects to a given network at different times, it will always configure the
+same IPv6 addresses on that network. If the device hosts a service ready to 
+accept connections on that stable address, adversaries can test the presence of the 
+device on the network by attempting connections to that stable address. Stable addresses
+used by listening services will thus enable tracking of the device's location, which
+in many cases will be considered a privacy issue.
+</t> 
 <!--
 <t>
 When performing outbound connections, the default source address selection algorithm 
@@ -264,7 +319,10 @@ if a host were to generate (and eventually "throw away") one new address for eac
 communication instance (e.g., TCP connection), network activity correlation would be mitigated. 
 
 <list style="hanging">
-<t>NOTE: the use of constant IIDs (as in traditional SLAAC) result in addresses that, while not constant as a whole (since the prefix changes), contain a globally-unique value that leaks out the node "identity". Such addresses result in the worst possible security and privacy implications, and their use has been deprecated by <xref target="RFC8064"/>.
+<t>NOTE: the use of constant IIDs (as in traditional SLAAC) result in addresses that, while 
+not constant as a whole (since the prefix changes), contain a globally-unique value that 
+leaks out the node "identity". Such addresses result in the worst possible security and 
+privacy implications, and their use has been deprecated by <xref target="RFC8064"/>.
 </t>
 </list>
 </t>
@@ -429,10 +487,12 @@ considered for future work.
 	<?rfc include="reference.RFC.2460" ?>
 	<?rfc include="reference.RFC.2119" ?>
 	<?rfc include="reference.RFC.4941" ?>
+	<?rfc include="reference.RFC.5905" ?>
+	<?rfc include="reference.RFC.6724" ?>
+	<?rfc include="reference.RFC.6763" ?>
 	<?rfc include="reference.RFC.7217" ?>
-<!--
 	<?rfc include="reference.RFC.8064" ?>
--->
+<!--
       <reference anchor="RFC8064" target="https://tools.ietf.org/rfc/rfc8064.txt">
         <front>
 <title abbrev="Default Interface Identifiers">Recommendation on Stable IPv6 Interface Identifiers</title>
@@ -516,10 +576,8 @@ considered for future work.
 
 <date month="February" year="2017"/>
         </front>
-<!--
-        <seriesInfo name=""
-                    value="February 2017"/> -->
       </reference>
+-->
 
   </references>
 
