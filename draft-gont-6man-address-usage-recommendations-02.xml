@@ -129,8 +129,8 @@ them in a number of popular scenarios. -->
 multiple aspects, such as address scope and stability (e.g. stable addresses vs. 
 temporary addresses). For example, a host may configure one stable and one temporary 
 address per each autoconfiguration prefix advertised on the local network. The addresses 
-to be configured typically depend on local system configuration, with the aforementioned 
-configuration being static and irrespective of the network the host attaches to.</t>
+to be configured typically depend on local system policy configuration, with the aforementioned 
+policy being static and irrespective of the network the host attaches to.</t>
 
 
 
@@ -168,8 +168,8 @@ stability and usage type properties of IPv6 addresses, respectively.
 <section title="Problem Statement" >
 <t>
 Applications use system API's to select the IPv6 addresses that will be used
-for incoming and outgoing connections. This choices have consequences in term
-of privacy, security, stability and performances.
+for incoming and outgoing connections. This choices have consequences in terms
+of privacy, security, stability and performance.
 </t>
 <t>
 Default Address Selection for IPv6 is specified in <xref target="RFC6724" />. The
@@ -177,17 +177,17 @@ selection starts with a set of potential destination addresses, such as
 returned by getaddrinfo(), and the set of potential source addresses currently
 configured for the selected interfaces. For each potential destination address,
 the algorithm will select the source address that provides the best route to the 
-destination, while chosing the appropriate scope and prefering temporary addresses.
+destination, while choosing the appropriate scope and preferring temporary addresses.
 The algorithm will then select the destination address, while giving a preference to
 reachable addresses with the smallest scope. The selection may be affected by system
 settings.
 </t>
 <t>
 We note that <xref target="RFC6724" /> only applies for outgoing connections, such
-as those made by clients trying to contact services. When devices provide service, the
+as those made by clients trying to contact services. When devices provide a service, the
 common pattern is to just wait for connections over all addresses configured on the 
-device. For example, application using the socket API will commonly bind() the listening 
-socket to undefined address. This long established behavior is appropriate
+device. For example, applications using the Sockets API will commonly bind() the listening 
+socket to undefined address. This long-established behavior is appropriate
 for devices providing public services, but may have unexpected results for devices
 providing semi-private services, such as various forms of peer-to-peer or local-only
 applications.
@@ -203,12 +203,14 @@ by the limitations of available address selection API, presented in <xref target
 <t>
 The stable addresses recommended in <xref target="RFC8064" /> use stable IID defined
 in <xref target="RFC7217" />. One key part of that algorithm is that if a device
-gets connects to a given network at different times, it will always configure the
+connects to a given network at different times, it will always configure the
 same IPv6 addresses on that network. If the device hosts a service ready to 
 accept connections on that stable address, adversaries can test the presence of the 
-device on the network by attempting connections to that stable address. Stable addresses
-used by listening services will thus enable tracking of the device's location, which
+device on the network by attempting connections to that stable address<!--. Stable addresses
+used by listening services will thus enable tracking of the device's location-->, which
 in many cases will be considered a privacy issue.
+
+<!-- [fgont] I commented out a pice of the text above. What we usually refer to as "location tracking" is only allowed if the IID is constant. That is, stable across networks. In the case of RFC8064/RFC7217, you cannot infer the identity of the node by lookingat the IID, since it changes as the node moves from one network to another -->
 </t> 
 </section>
 <section title="Unexpected Address Discovery" anchor="unexpectedDisco" >
@@ -232,8 +234,7 @@ addresses.
 </t>
 <t>
 It is obvious from the example that the "attack surface" of the services is increased 
-because it listens to the same IPv6 addresses that are also used by clients for remote
-connectivity. But the overlap between "client" and "server" addresses is only one part of
+because it listens to the same IPv6 addresses that are also used by clients for outgoing communications with remote systems. But the overlap between "client" and "server" addresses is only one part of
 the problem. Suppose that a devices hosts both a video game and a home automation 
 application. The video game users will be able to discover the IPv6 address of the
 game server. If the home automation server listens to the same IPv6 addresses, it 
@@ -260,7 +261,7 @@ practice means every address configured for the device.
 </section>
 <section title="Limited Address Selection API" anchor="limitedApi" >
 <t>
-Application developers using the socket API can "bind" a listening socket to a specific
+Application developers using the Sockets API can "bind" a listening socket to a specific
 address, and ensure that the application is only reachable through that address. In
 theory, careful selection of the binding address could mitigate the three problems
 mentioned above. Binding services to temporary address could mitigate device tracking.
@@ -269,7 +270,7 @@ Binding services to link local addresses or ULA could mitigate availability outs
 expected scope. However,
 explicitly managing addresses adds significant complexity to the application development.
 It requires that application developers master addressing architectures subtleties, and 
-implement logic that reacts adequaltly to connectivity events and address changes. 
+implement logic that reacts adequately to connectivity events and address changes. 
 Experience shows that application developers would probably prefer some much simpler solution.
 </t>
 <t>
@@ -433,7 +434,7 @@ might also need to keep such additional state.
 </t>
 
 <t>Additionally, enforcing a maximum lifetime on IPv6 addresses may cause long-lived 
-TCP connections to fail. For example, an address becoming "Invalid" (after transiting 
+TCP connections to fail. For example, an address becoming "Invalid" (after transitioning 
 through the "Preferred" and "Deprecated" states) would cause the TCP connections 
 employing them to break. This, in turn, would cause e.g. long-lived SSH sessions to break/fail.
 </t>
@@ -466,7 +467,7 @@ leverage such addresses for actively contacting the clients.
 
 <t>There are multiple ways in which this could possibly be achieved, with different 
 implications. Namely:
-<list>
+<list style="symbols">
 <t>Run a host-based or network-based firewall</t>
 <t>Bind services to specific (explicit) addresses</t>
 <t>Bind services only to stable addresses</t>
@@ -479,7 +480,7 @@ on the stable addresses. This is clearly more of an operational way of achieving
 desired functionality, and may require good firewall/host integration (e.g., the firewall 
 should be able to tell stable vs. temporary addresses), may require the client to run 
 additional firewall software for this specific purpose, etc. In other scenarios, a 
-network-based firewalls could be configured to allow outgoing communications from all 
+network-based firewall could be configured to allow outgoing communications from all 
 internal addresses, but only allow incoming communications to stable addresses. For 
 obvious reasons, this is generally only applicable to networks where incoming communications 
 are allowed to a limited number of hosts/servers.
@@ -506,10 +507,24 @@ considered for future work.
 
 <section title="Advice on IPv6 Address Configuration" anchor="advice-configuration">
 <t>[TBD]</t>
+<t>TODO: This section is expected to provide advice regarding the configuration of different addresses for different typical scenarios. e.g., when nodes may want to configure stable-only, temporary-only, or stable+temporary. In the most simple analysis, one might expect nodes in a typical enterprise network to employ only stable addresses. General-purpose nodes in a home or "trusted" network may want to employ both stable and temporary addresses. Finally, mobile nodes (e.g. when roaming across non-trusted networks) may want to employ only temporary addresses).
+</t>
 </section>
 
 <section title="Advice on IPv6 Address Usage" anchor="advice-usage">
 <t>[TBD]</t>
+<t>TODO: This section is expected to provide recommendations regarding the usage of IPv6 addresses. Among others, it is expected to provide recommendations regarding the usage of IPv6 addresses when providing network services. In the mos simple form, one argue that nodes may want to employ only the smallest-scope applicable addresses (if available) and, if stable addresses are available, nodes may want to accept incoming connections on such addresses but *not* on temporary addresses.</t>
+</section>
+
+<section title="Future Work" anchor="future-work">
+<t>Some of the discussion in this document suggest that in order to fully benefit from the IPv6 addresses (in terms of e.g. increased availability of addresses and address types) additional work may be required in this areas:
+
+<list style="symbols">
+<t>Sockets API: The API may need to be extended such that a node may bind() only a subset of the available addresses, possibly by specifying a criteria (e.g. "only stable addresses", "only global", "only local", etc.).
+</t>
+</list>
+</t>
+<t>The aforementioned work may be carried out in this document, or as a result of spin off documents.</t>
 </section>
 
 	<section title="IANA Considerations" anchor="iana-considerations">
