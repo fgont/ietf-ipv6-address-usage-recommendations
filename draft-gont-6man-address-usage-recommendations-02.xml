@@ -199,7 +199,7 @@ This behavior leads to three problems: device tracking, discussed in
 discussed in <xref target="availableOutside"/>. These problems are caused in part
 by the limitations of available address selection API, presented in <xref target="limitedApi"/>.
 </t>
-<section title="Device Tracking"  anchor="deviceTracking" >
+<section title="Testing for the Presence of Node in the Network"  anchor="deviceTracking" >
 <t>
 The stable addresses recommended in <xref target="RFC8064" /> use stable IID defined
 in <xref target="RFC7217" />. One key part of that algorithm is that if a device
@@ -218,6 +218,9 @@ by looking at the IID, since it changes as the node moves from one network to an
 [ch] OK, changed the text a bit. Of course, the hash construction prevents directly
 inferring that "IID X on network Y" is the same as "IID Z on network T". But it can
 be used to test presence on a network. "Device X is returning to network Y." 
+
+[fgont] The updated text is fine.
+
 -->
 </t> 
 </section>
@@ -540,18 +543,25 @@ considered for future work.
 </section>
 
     <section title="Security Considerations">
-
-	<t>This document discusses address usage considerations, and also describes possible future standards-track work to allow for greater flexibility in IPv6 address usage.</t>
+<t>The security and privacy implications associated with the predictability and lifetime of IPv6 addresses has been analyzed in <xref target="RFC7217"/> <xref target="RFC7721"/>, and <xref target="RFC7707"/>. This document complements and extends the aforementioned analysis by considering other IPv6 properties such as the address scope and address usage type. </t>
+<t>This document also analyzes what properties are desirable for some popular scenarios, and provides 
+advice regarding the configuration and usage of such addresses. Finally, it describes possible future standards-track work to allow for greater flexibility in IPv6 address usage.</t>
 
     </section>
 
     <section title="Acknowledgements">
 <t>The authors would like to thank [TBD] for providing valuable comments on earlier versions of this document.</t>
 
+<!--
 <t>Fernando Gont would like to thank Nelida Garcia and Jorge Oscar Gont for their love and support, and Ivan Arce and Diego Armando Maradona for their inspiration.</t>
+-->
     
 <!-- [CH] I do not feel confortable with this kind of private acknowledgements. They are fine in 
 a personal work like a PhD thesis, but out of place in a professional document like an RFC -->
+
+<!-- 
+[fgont] I ended up removing this for the sake of not wasting time. I should note that Acks in RFC range from excerpts from Shakespeare's plays (RC1812), to marketing-like statements (RFC2437), or funding acknowledgements (RFC6546, 6181, etc.).The first two people I had included in the Acks provided, among other things, funding - - hence I thought acking them wouldn't be an issue.
+-->
 
 </section>
 
@@ -572,92 +582,6 @@ a personal work like a PhD thesis, but out of place in a professional document l
 	<?rfc include="reference.RFC.6763" ?>
 	<?rfc include="reference.RFC.7217" ?>
 	<?rfc include="reference.RFC.8064" ?>
-<!--
-      <reference anchor="RFC8064" target="https://tools.ietf.org/rfc/rfc8064.txt">
-        <front>
-<title abbrev="Default Interface Identifiers">Recommendation on Stable IPv6 Interface Identifiers</title>
-
-
-    <author fullname="Fernando Gont" initials="F." surname="Gont">
-      <organization abbrev="SI6 Networks / UTN-FRH">SI6 Networks / UTN-FRH</organization>
-
-      <address>
-        <postal>
-          <street>Evaristo Carriego 2644</street>
-
-          <code>1706</code>
-
-          <city>Haedo</city>
-
-          <region>Provincia de Buenos Aires</region>
-
-          <country>Argentina</country>
-        </postal>
-
-        <phone>+54 11 4650 8472</phone>
-
-        <email>fgont@si6networks.com</email>
-
-        <uri>https://www.si6networks.com</uri>
-      </address>
-    </author>
-
-<author initials="A." surname="Cooper" fullname="Alissa Cooper">
-    <organization>Cisco</organization>
-    <address>
-      <postal>
-        <street>707 Tasman Drive</street>
-        <city>Milpitas</city>
-		  <region>CA</region>
-        <code>95035</code>
-        <country>United States of America</country>
-      </postal>
-      <phone>+1-408-902-3950</phone>
-      <email>alcoop@cisco.com</email>
-      <uri>https://www.cisco.com/</uri>
-    </address>
-  </author>
-
-	<author
-	        fullname="Dave Thaler"
-	        initials="D."
-	        surname="Thaler">
-	        <organization>Microsoft</organization>
-
-	        <address>
-
-	            <postal>    
-				<street>Microsoft Corporation</street>
-				<street>One Microsoft Way</street>
-			<city>Redmond</city>
-			<region>WA</region>
-			<code>98052</code>
-	            </postal>
-	            <phone>+1 425 703 8835</phone>
-
-	            <email>dthaler@microsoft.com</email>
-
-	        </address>
-	    </author>
-
-    <author initials="W." surname="Liu" fullname="Will (Shucheng) Liu">
-      <organization>Huawei Technologies</organization>
-      <address>
-        <postal>
-          <street>Bantian, Longgang District</street>
-          <city>Shenzhen</city>
-          <code>518129</code>
-          <country>China</country>
-        </postal>
-        <email>liushucheng@huawei.com</email>
-      </address>
-    </author>
-
-
-<date month="February" year="2017"/>
-        </front>
-      </reference>
--->
 
   </references>
 

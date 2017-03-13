@@ -69,7 +69,7 @@ Table of Contents
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
    2.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   3
    3.  Problem Statement . . . . . . . . . . . . . . . . . . . . . .   3
-     3.1.  Device Tracking . . . . . . . . . . . . . . . . . . . . .   4
+     3.1.  Testing for the Presence of Node in the Network . . . . .   4
      3.2.  Unexpected Address Discovery  . . . . . . . . . . . . . .   4
      3.3.  Availability Outside the Expected Scope . . . . . . . . .   4
      3.4.  Limited Address Selection API . . . . . . . . . . . . . .   5
@@ -170,7 +170,7 @@ Gont, et al.           Expires September 14, 2017               [Page 3]
 Internet-Draft        IPv6 Address Recommendations            March 2017
 
 
-3.1.  Device Tracking
+3.1.  Testing for the Presence of Node in the Network
 
    The stable addresses recommended in [RFC8064] use stable IID defined
    in [RFC7217].  One key part of that algorithm is that if a device
@@ -529,18 +529,22 @@ Internet-Draft        IPv6 Address Recommendations            March 2017
 
 12.  Security Considerations
 
-   This document discusses address usage considerations, and also
-   describes possible future standards-track work to allow for greater
-   flexibility in IPv6 address usage.
+   The security and privacy implications associated with the
+   predictability and lifetime of IPv6 addresses has been analyzed in
+   [RFC7217] [RFC7721], and [RFC7707].  This document complements and
+   extends the aforementioned analysis by considering other IPv6
+   properties such as the address scope and address usage type.
+
+   This document also analyzes what properties are desirable for some
+   popular scenarios, and provides advice regarding the configuration
+   and usage of such addresses.  Finally, it describes possible future
+   standards-track work to allow for greater flexibility in IPv6 address
+   usage.
 
 13.  Acknowledgements
 
    The authors would like to thank [TBD] for providing valuable comments
    on earlier versions of this document.
-
-   Fernando Gont would like to thank Nelida Garcia and Jorge Oscar Gont
-   for their love and support, and Ivan Arce and Diego Armando Maradona
-   for their inspiration.
 
 14.  References
 
@@ -551,16 +555,16 @@ Internet-Draft        IPv6 Address Recommendations            March 2017
               DOI 10.17487/RFC2119, March 1997,
               <http://www.rfc-editor.org/info/rfc2119>.
 
-   [RFC4193]  Hinden, R. and B. Haberman, "Unique Local IPv6 Unicast
-              Addresses", RFC 4193, DOI 10.17487/RFC4193, October 2005,
-              <http://www.rfc-editor.org/info/rfc4193>.
-
 
 
 Gont, et al.           Expires September 14, 2017              [Page 10]
 
 Internet-Draft        IPv6 Address Recommendations            March 2017
 
+
+   [RFC4193]  Hinden, R. and B. Haberman, "Unique Local IPv6 Unicast
+              Addresses", RFC 4193, DOI 10.17487/RFC4193, October 2005,
+              <http://www.rfc-editor.org/info/rfc4193>.
 
    [RFC4291]  Hinden, R. and S. Deering, "IP Version 6 Addressing
               Architecture", RFC 4291, DOI 10.17487/RFC4291, February
@@ -609,10 +613,6 @@ Internet-Draft        IPv6 Address Recommendations            March 2017
 
 
 
-
-
-
-
 Gont, et al.           Expires September 14, 2017              [Page 11]
 
 Internet-Draft        IPv6 Address Recommendations            March 2017
@@ -621,12 +621,13 @@ Internet-Draft        IPv6 Address Recommendations            March 2017
    [I-D.ietf-v6ops-ula-usage-considerations]
               Liu, B. and S. Jiang, "Considerations For Using Unique
               Local Addresses", draft-ietf-v6ops-ula-usage-
-              considerations-01 (work in progress), August 2016.
+              considerations-02 (work in progress), March 2017.
 
    [I-D.gont-6man-non-stable-iids]
-              Gont, F. and S. LIU, "Recommendation on Non-Stable IPv6
-              Interface Identifiers", draft-gont-6man-non-stable-iids-00
-              (work in progress), May 2016.
+              Gont, F., Huitema, C., Gont, G., and M. Corbo,
+              "Recommendation on Temporary IPv6 Interface Identifiers",
+              draft-gont-6man-non-stable-iids-01 (work in progress),
+              March 2017.
 
    [I-D.gont-opsawg-firewalls-analysis]
               Gont, F. and F. Baker, "On Firewalls in Network Security",
@@ -657,6 +658,22 @@ Authors' Addresses
    URI:   http://www.si6networks.com
 
 
+
+
+
+
+
+
+
+
+
+
+
+Gont, et al.           Expires September 14, 2017              [Page 12]
+
+Internet-Draft        IPv6 Address Recommendations            March 2017
+
+
    Guillermo Gont
    SI6 Networks
    Evaristo Carriego 2644
@@ -666,12 +683,6 @@ Authors' Addresses
    Phone: +54 11 4650 8472
    Email: ggont@si6networks.com
    URI:   https://www.si6networks.com
-
-
-
-Gont, et al.           Expires September 14, 2017              [Page 12]
-
-Internet-Draft        IPv6 Address Recommendations            March 2017
 
 
    Madeleine Garcia Corbo
@@ -690,17 +701,6 @@ Internet-Draft        IPv6 Address Recommendations            March 2017
 
    Email: huitema@huitema.net
    URI:   http://privateoctopus.com
-
-
-
-
-
-
-
-
-
-
-
 
 
 
