@@ -191,7 +191,27 @@ socket to undefined address. This long established behavior is appropriate
 for devices providing public services, but may have unexpected results for devices
 providing semi-private services, such as various forms of peer-to-peer or local-only
 applications.
+</t> 
+<t>
+This behavior leads to three problems: device tracking, discussed in 
+<xref target="deviceTracking"/>; unexpected address discovery, discussed in
+<xref target="unexpectedDisco"/>; and availability outside the expected scope,
+discussed in <xref target="availableOutside"/>. These problems are caused in part
+by the limitations of available address selection API, presented in <xref target="limitedApi"/>.
 </t>
+<section title="Device Tracking"  anchor="deviceTracking" >
+<t>
+The stable addresses recommended in <xref target="RFC8064" /> use stable IID defined
+in <xref target="RFC7217" />. One key part of that algorithm is that if a device
+gets connects to a given network at different times, it will always configure the
+same IPv6 addresses on that network. If the device hosts a service ready to 
+accept connections on that stable address, adversaries can test the presence of the 
+device on the network by attempting connections to that stable address. Stable addresses
+used by listening services will thus enable tracking of the device's location, which
+in many cases will be considered a privacy issue.
+</t> 
+</section>
+<section title="Unexpected Address Discovery" anchor="unexpectedDisco" >
 <t>
 Systems like DNS-Based Service Discovery <xref target="RFC6763" /> allows clients to 
 discover services within a limited scope, that can be defined by a domain name. These
@@ -220,16 +240,45 @@ game server. If the home automation server listens to the same IPv6 addresses, i
 is now exposed to connection attempts by all these users. That, too, increases the
 attack surface of the home automation server.
 </t>
+</section>
+<section title="Availability Outside the Expected Scope"  anchor="availableOutside">
 <t>
-The stable addresses recommended in <xref target="RFC8064" /> use stable IID defined
-in <xref target="RFC7217" />. One key part of that algorithm is that if a device
-gets connects to a given network at different times, it will always configure the
-same IPv6 addresses on that network. If the device hosts a service ready to 
-accept connections on that stable address, adversaries can test the presence of the 
-device on the network by attempting connections to that stable address. Stable addresses
-used by listening services will thus enable tracking of the device's location, which
-in many cases will be considered a privacy issue.
-</t> 
+The IPv6 addressing architecture <xref target='RFC4291' /> defines multiple address 
+scopes. In practice, devices are often configured with globally reachable 
+unicast addresses,
+link local addresses, and Unique Local IPv6 Unicast Addresses (ULA) 
+<xref target="RFC4193" />. Availability outside the expected scope happens when 
+a service is expected to be only available in some local scope, but inadvertently becomes
+available to remote parties. That could happen for example if a service is meant
+to be available only on a given link, but becomes reachable through ULA or through
+globally reachable addresses, or if a service is meant to be available only inside
+some organization's perimeter and becomes reachable through
+globally reachable addresses. It will happen in particular if a service intended for
+some local scope is programmed to bind to "unspecified" addresses, which in 
+practice means every address configured for the device.
+</t>
+</section>
+<section title="Limited Address Selection API" anchor="limitedApi" >
+<t>
+Application developers using the socket API can "bind" a listening socket to a specific
+address, and ensure that the application is only reachable through that address. In
+theory, careful selection of the binding address could mitigate the three problems
+mentioned above. Binding services to temporary address could mitigate device tracking.
+Binding different services to different addresses could mitigate unexpected discovery.
+Binding services to link local addresses or ULA could mitigate availability outside the
+expected scope. However,
+explicitly managing addresses adds significant complexity to the application development.
+It requires that application developers master addressing architectures subtleties, and 
+implement logic that reacts adequaltly to connectivity events and address changes. 
+Experience shows that application developers would probably prefer some much simpler solution.
+</t>
+<t>
+In addition, we should note that many application developers use high level APIs that
+listen to TLS, HTTP, or some other application protocol. These high level APIs seldom
+provide detailed access to specific IP addresses, and typically default to listening
+to all available addresses.
+</t>
+</section>
 <!--
 <t>
 When performing outbound connections, the default source address selection algorithm 
@@ -484,8 +533,12 @@ considered for future work.
 
   <back>
   <references title='Normative References'>
+<!--
 	<?rfc include="reference.RFC.2460" ?>
+-->
 	<?rfc include="reference.RFC.2119" ?>
+	<?rfc include="reference.RFC.4193" ?>
+	<?rfc include="reference.RFC.4291" ?>
 	<?rfc include="reference.RFC.4941" ?>
 	<?rfc include="reference.RFC.5905" ?>
 	<?rfc include="reference.RFC.6724" ?>
