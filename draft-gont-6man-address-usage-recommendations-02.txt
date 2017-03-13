@@ -178,8 +178,10 @@ Internet-Draft        IPv6 Address Recommendations            March 2017
    configure the same IPv6 addresses on that network.  If the device
    hosts a service ready to accept connections on that stable address,
    adversaries can test the presence of the device on the network by
-   attempting connections to that stable address, which in many cases
-   will be considered a privacy issue.
+   attempting connections to that stable address.  Stable addresses used
+   by listening services will thus enable testing whether a specific
+   device is returning to a particular network, which in many cases will
+   be considered a privacy issue.
 
 3.2.  Unexpected Address Discovery
 
@@ -216,8 +218,6 @@ Internet-Draft        IPv6 Address Recommendations            March 2017
    The IPv6 addressing architecture [RFC4291] defines multiple address
    scopes.  In practice, devices are often configured with globally
    reachable unicast addresses, link local addresses, and Unique Local
-   IPv6 Unicast Addresses (ULA) [RFC4193].  Availability outside the
-   expected scope happens when a service is expected to be only
 
 
 
@@ -226,6 +226,8 @@ Gont, et al.           Expires September 14, 2017               [Page 4]
 Internet-Draft        IPv6 Address Recommendations            March 2017
 
 
+   IPv6 Unicast Addresses (ULA) [RFC4193].  Availability outside the
+   expected scope happens when a service is expected to be only
    available in some local scope, but inadvertently becomes available to
    remote parties.  That could happen for example if a service is meant
    to be available only on a given link, but becomes reachable through
@@ -272,8 +274,6 @@ Internet-Draft        IPv6 Address Recommendations            March 2017
    specification update produced by [RFC8064], we expect (and assume in
    the rest of this document) that implementations have replaced any
    schemes that produce predictable addresses with alternative schemes
-   that avoid such patterns (e.g., RFC7217 in replacement of the
-   traditional SLAAC addresses that embed link-layer addresses).
 
 
 
@@ -281,6 +281,9 @@ Gont, et al.           Expires September 14, 2017               [Page 5]
 
 Internet-Draft        IPv6 Address Recommendations            March 2017
 
+
+   that avoid such patterns (e.g., RFC7217 in replacement of the
+   traditional SLAAC addresses that embed link-layer addresses).
 
 5.  Address Scope Considerations
 
@@ -326,10 +329,7 @@ Internet-Draft        IPv6 Address Recommendations            March 2017
    instance (e.g., TCP connection), network activity correlation would
    be mitigated.
 
-      NOTE: the use of constant IIDs (as in traditional SLAAC) result in
-      addresses that, while not constant as a whole (since the prefix
-      changes), contain a globally-unique value that leaks out the node
-      "identity".  Such addresses result in the worst possible security
+
 
 
 
@@ -338,6 +338,10 @@ Gont, et al.           Expires September 14, 2017               [Page 6]
 Internet-Draft        IPv6 Address Recommendations            March 2017
 
 
+      NOTE: the use of constant IIDs (as in traditional SLAAC) result in
+      addresses that, while not constant as a whole (since the prefix
+      changes), contain a globally-unique value that leaks out the node
+      "identity".  Such addresses result in the worst possible security
       and privacy implications, and their use has been deprecated by
       [RFC8064].
 
@@ -382,10 +386,6 @@ Internet-Draft        IPv6 Address Recommendations            March 2017
    a number of devices (possibly enforcing security policies) might also
    need to keep such additional state.
 
-   Additionally, enforcing a maximum lifetime on IPv6 addresses may
-   cause long-lived TCP connections to fail.  For example, an address
-   becoming "Invalid" (after transitioning through the "Preferred" and
-   "Deprecated" states) would cause the TCP connections employing them
 
 
 
@@ -394,6 +394,10 @@ Gont, et al.           Expires September 14, 2017               [Page 7]
 Internet-Draft        IPv6 Address Recommendations            March 2017
 
 
+   Additionally, enforcing a maximum lifetime on IPv6 addresses may
+   cause long-lived TCP connections to fail.  For example, an address
+   becoming "Invalid" (after transitioning through the "Preferred" and
+   "Deprecated" states) would cause the TCP connections employing them
    to break.  This, in turn, would cause e.g. long-lived SSH sessions to
    break/fail.
 
@@ -437,11 +441,7 @@ Internet-Draft        IPv6 Address Recommendations            March 2017
    In other scenarios, a network-based firewall could be configured to
    allow outgoing communications from all internal addresses, but only
    allow incoming communications to stable addresses.  For obvious
-   reasons, this is generally only applicable to networks where incoming
-   communications are allowed to a limited number of hosts/servers.
 
-   Services could be bound to specific (explicit) addresses, rather than
-   to all locally-configured addresses.  However, there are a number of
 
 
 
@@ -450,6 +450,11 @@ Gont, et al.           Expires September 14, 2017               [Page 8]
 Internet-Draft        IPv6 Address Recommendations            March 2017
 
 
+   reasons, this is generally only applicable to networks where incoming
+   communications are allowed to a limited number of hosts/servers.
+
+   Services could be bound to specific (explicit) addresses, rather than
+   to all locally-configured addresses.  However, there are a number of
    short-comings associated with this approach.  Firstly, an application
    would need to be able to learn all of its addresses and associated
    stability properties, something that tends to be non-trivial and non-
@@ -493,11 +498,6 @@ Internet-Draft        IPv6 Address Recommendations            March 2017
    available) and, if stable addresses are available, nodes may want to
    accept incoming connections on such addresses but *not* on temporary
    addresses.
-
-
-
-
-
 
 
 

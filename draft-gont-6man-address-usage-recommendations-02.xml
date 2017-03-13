@@ -206,11 +206,19 @@ in <xref target="RFC7217" />. One key part of that algorithm is that if a device
 connects to a given network at different times, it will always configure the
 same IPv6 addresses on that network. If the device hosts a service ready to 
 accept connections on that stable address, adversaries can test the presence of the 
-device on the network by attempting connections to that stable address<!--. Stable addresses
-used by listening services will thus enable tracking of the device's location-->, which
+device on the network by attempting connections to that stable address. Stable addresses
+used by listening services will thus enable testing whether a specific device is
+returning to a particular network, which
 in many cases will be considered a privacy issue.
 
-<!-- [fgont] I commented out a pice of the text above. What we usually refer to as "location tracking" is only allowed if the IID is constant. That is, stable across networks. In the case of RFC8064/RFC7217, you cannot infer the identity of the node by lookingat the IID, since it changes as the node moves from one network to another -->
+<!-- [fgont] I commented out a piece of the text above. What we usually refer to as
+"location tracking" is only allowed if the IID is constant. That is, stable across 
+networks. In the case of RFC8064/RFC7217, you cannot infer the identity of the node 
+by looking at the IID, since it changes as the node moves from one network to another 
+[ch] OK, changed the text a bit. Of course, the hash construction prevents directly
+inferring that "IID X on network Y" is the same as "IID Z on network T". But it can
+be used to test presence on a network. "Device X is returning to network Y." 
+-->
 </t> 
 </section>
 <section title="Unexpected Address Discovery" anchor="unexpectedDisco" >
@@ -541,7 +549,11 @@ considered for future work.
 <t>The authors would like to thank [TBD] for providing valuable comments on earlier versions of this document.</t>
 
 <t>Fernando Gont would like to thank Nelida Garcia and Jorge Oscar Gont for their love and support, and Ivan Arce and Diego Armando Maradona for their inspiration.</t>
-    </section>
+    
+<!-- [CH] I do not feel confortable with this kind of private acknowledgements. They are fine in 
+a personal work like a PhD thesis, but out of place in a professional document like an RFC -->
+
+</section>
 
 
   </middle>
