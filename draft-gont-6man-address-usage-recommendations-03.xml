@@ -153,6 +153,7 @@ discuss the security and privacy implications (and associated tradeoffs) of the 
 stability and usage type properties of IPv6 addresses, respectively.
 </t>
 
+
 </section>
 
 
@@ -165,6 +166,23 @@ stability and usage type properties of IPv6 addresses, respectively.
    "OPTIONAL" in this document are to be interpreted as described in
    RFC 2119 <xref target="RFC2119"/>.</t>
 </section>
+
+
+<section title="Background" anchor="predictability-considerations">
+<t>Predictable IPv6 addresses result in a number of security and privacy implications. 
+For example, <xref target="Barnes2012"/> discusses how patterns in network prefixes 
+can be leveraged for IPv6 address scanning. On the other hand, <xref target="RFC7707"/>, 
+<xref target="RFC7721"/> and <xref target="RFC7217"/> discuss the security and privacy 
+implications of predictable IPv6 Interface Identifiers (IIDs).</t>
+
+<t>
+Given the aforementioned previous work in this area, and the formal specification update 
+produced by <xref target="RFC8064"/>, we expect (and assume in the rest of this document) 
+that implementations have replaced any schemes that produce predictable addresses with 
+alternative schemes that avoid such patterns (e.g., RFC7217 in replacement of the 
+traditional SLAAC addresses that embed link-layer addresses). </t>
+</section>
+
 
 <section title="Problem Statement" >
 <t>
@@ -326,20 +344,6 @@ or exposing only such addresses via the application protocol.
 
 </section>
 
-<section title="Predictability Considerations" anchor="predictability-considerations">
-<t>Predictable IPv6 addresses result in a number of security and privacy implications. 
-For example, <xref target="Barnes2012"/> discusses how patterns in network prefixes 
-can be leveraged for IPv6 address scanning. On the other hand, <xref target="RFC7707"/>, 
-<xref target="RFC7721"/> and <xref target="RFC7217"/> discuss the security and privacy 
-implications of predictable IPv6 Interface Identifiers (IIDs).</t>
-
-<t>
-Given the aforementioned previous work in this area, and the formal specification update 
-produced by <xref target="RFC8064"/>, we expect (and assume in the rest of this document) 
-that implementations have replaced any schemes that produce predictable addresses with 
-alternative schemes that avoid such patterns (e.g., RFC7217 in replacement of the 
-traditional SLAAC addresses that embed link-layer addresses). </t>
-</section>
 
 
 <section title="IPv6 Address Considerations" anchor="address-considerations">
