@@ -147,7 +147,7 @@ policy being static and irrespective of the network the host attaches to.</t>
 </t>
 
 <t>
-<xref target="predictability-considerations"/>, <xref target="scope-considerations"/>, 
+<xref target="scope-considerations"/>, 
 <xref target="stability-considerations"/>, and <xref target="usage-type-considerations"/> 
 discuss the security and privacy implications (and associated tradeoffs) of the scope, 
 stability and usage type properties of IPv6 addresses, respectively.
@@ -200,6 +200,7 @@ This behavior leads to three problems: device tracking, discussed in
 discussed in <xref target="availableOutside"/>. These problems are caused in part
 by the limitations of available address selection API, presented in <xref target="limitedApi"/>.
 </t>
+
 <section title="Testing for the Presence of Node in the Network"  anchor="deviceTracking" >
 <!-- [fgont] 'Device tracking' is not the right term here... but still havent been able to come up with something better -->
 
@@ -341,7 +342,7 @@ traditional SLAAC addresses that embed link-layer addresses). </t>
 </section>
 
 
-
+<section title="IPv6 Address Considerations" anchor="address-considerations">
 <section title="Address Scope Considerations" anchor="scope-considerations">
 <t>
 The IPv6 address scope can, in some scenarios, limit the attack exposure of a node as a result 
@@ -517,6 +518,7 @@ socket should only be bound to stable addresses. Development of such an API shou
 considered for future work.
 </t>
 
+</section>
 </section>
 
 <section title="Advice on IPv6 Address Configuration" anchor="advice-configuration">
