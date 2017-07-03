@@ -184,7 +184,7 @@ traditional SLAAC addresses that embed link-layer addresses). </t>
 </section>
 
 
-<section title="Problem Statement" >
+<section title="Problem Statement" anchor="problem-statement">
 <t>
 Applications use system API's to select the IPv6 addresses that will be used
 for incoming and outgoing connections. This choices have consequences in terms
@@ -219,7 +219,8 @@ discussed in <xref target="availableOutside"/>. These problems are caused in par
 by the limitations of available address selection API, presented in <xref target="limitedApi"/>.
 </t>
 
-<section title="Testing for the Presence of Node in the Network"  anchor="deviceTracking" >
+<section title="Issues Associated with Sub-optimal IPv6 Address Usage" anchor="issues">
+<section title="Testing for the Presence of Node in the Network"  anchor="deviceTracking">
 <!-- [fgont] 'Device tracking' is not the right term here... but still havent been able to come up with something better -->
 
 <t>
@@ -275,6 +276,7 @@ is now exposed to connection attempts by all these users. That, too, increases t
 attack surface of the home automation server.
 </t>
 </section>
+
 <section title="Availability Outside the Expected Scope"  anchor="availableOutside">
 <t>
 The IPv6 addressing architecture <xref target='RFC4291' /> defines multiple address 
@@ -292,7 +294,9 @@ some local scope is programmed to bind to "unspecified" addresses, which in
 practice means every address configured for the device.
 </t>
 </section>
-<section title="Limited Address Selection API" anchor="limitedApi" >
+</section> <!-- issues with... -->
+
+<section title="Current Limitations in the Address Selection API" anchor="limitedApi" >
 <t>
 Application developers using the Sockets API can "bind" a listening socket to a specific
 address, and ensure that the application is only reachable through that address. In
@@ -312,37 +316,8 @@ listen to TLS, HTTP, or some other application protocol. These high level APIs s
 provide detailed access to specific IP addresses, and typically default to listening
 to all available addresses.
 </t>
-</section>
-<!--
-<t>
-When performing outbound connections, the default source address selection algorithm 
-XXX will govern the preference for the source address to be employed. The default 
-source address selection algorithm is specified in xxxx, and can be overriden via e.g. 
-an API such as that specified in XXXX, or via system-wide settings.
-</t>
-
-<t>
-For example, when a temporary address is available, such temporary addresses will be 
-employed by default for such outbound "connections". This makes sense from a security 
-and privacy standpoint, since temporary addresses more effectively mitigate network 
-activity correlation attacks.
-</t>
-
-
-<t>
-
-When it comes to inbound connections, hosts typically bind the so-called wildcard address, 
-thus meaning that incoming connections are accepted on any of the configured addresses, 
-although the preference of receiving incoming connections on stable addresses (typically 
-of global scope) may be indicated by e.g. publishing only such addresses on the DNS, 
-or exposing only such addresses via the application protocol.
-
-</t>
-
--->
-
-
-</section>
+</section> <!-- limited api -->
+</section> <!-- problem statement -->
 
 
 
@@ -523,7 +498,28 @@ considered for future work.
 </t>
 
 </section>
-</section>
+</section> <!-- address considerations -->
+
+
+<section title="Possible Approaches for IPv6 Address Usage" anchor="approaches">
+<t>There are a number of ways in which a system or network may affect which address (and how) may be employed for different services and cases. Namely,
+
+<list style="symbols">
+<t>TCP/IP stack address filtering</t>
+<t>Application-based address filtering</t>
+<t>Firewall-based address filtering</t>
+</list>
+</t>
+
+<t>Clearly, the most elegant approach for address selection is for applications to be able to specify the properties of the addresses they are 
+willing to employ by means of an API, such the TCP/IP stack itself can "filter" which addresses are allowed to be employed for the given service/application. This relieves the application from dealing with low level details of networking, improves portability, and avoids duplicate code in applications. However, constraints in the current APIs (see <xref target="limitedApi"/>) may limit the ability of application progremmers form leveraging this technique.</t>
+
+<t>Another possible approach is for applications to e.g. bind services to all available addresses, and perform the associated selection/filtering at the application level. While possible this has a number of drawbacks. Firstly, it would require applications to deal with low-level networking details, require that all the associated code be duplicated in all applications, and also negatively affect portability. Besides, performing address/selection filtering at the application level may not mitigate some possible threats. For example, port scanning will still be possible, since the aforementioned filtering will only be performed e.g. once UDP packets are received or TCP connections are established.
+</t>
+<t>Finally, a firewall may be employed to filter addresses based on their intended usage. For example, a firewall may block incomming requests to all addresses except to some whitelisted addresses (such as the stable addresses of the node). This technique not only requires the use of a firewall (which may or may not be present), but also implies knowledge of the firewall regarding the desired properties of the addresses that each application/service is intentended to use.
+</t>
+</section> <!-- approaches -->
+
 
 <section title="Advice on IPv6 Address Configuration" anchor="advice-configuration">
 <t>[TBD]</t>
